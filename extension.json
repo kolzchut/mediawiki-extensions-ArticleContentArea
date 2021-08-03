@@ -1,0 +1,41 @@
+{
+	"name": "ArticleContentArea",
+	"version": "0.1.0",
+	"author": "Dror S. [FFS] ([https://www.kolzchut.org.il Kol-Zchut])",
+	"url": "https://github.com/kolzchut/mediawiki-extensions-ArticleContentArea",
+	"descriptionmsg": "articlecontentarea-desc",
+	"license-name": "GPL-2.0-or-later",
+	"type": "parserhook",
+	"requires": {
+		"MediaWiki": ">= 1.35.0"
+	},
+	"AutoloadNamespaces": {
+		"MediaWiki\\Extension\\ArticleContentArea\\": "includes/"
+	},
+	"MessagesDirs": {
+		"ArticleContentArea": [
+			"i18n"
+		]
+	},
+	"ExtensionMessagesFiles": {
+		"ArticleContentAreaMagic": "ArticleContentArea.i18n.magic.php"
+	},
+	"Hooks": {
+		"ParserFirstCallInit": "handleHooks",
+		"MakeGlobalVariablesScript": "handleHooks",
+		"OutputPageParserOutput": "handleHooks"
+	},
+	"HookHandlers": {
+		"handleHooks": {
+			"class": "MediaWiki\\Extension\\ArticleContentArea\\Hooks"
+		}
+	},
+
+	"config": {
+		"ArticleContentAreaCategoryName": {
+			"value": null,
+			"description": "The name of a category whose members are the valid content areas"
+		}
+	},
+	"manifest_version": 2
+}
