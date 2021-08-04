@@ -45,7 +45,7 @@ class Hooks implements
 	 * @return string: HTML to insert in the page.
 	 */
 	public static function setArticleContentArea( Parser &$parser, string $articleContentArea ) {
-		$articleContentArea = htmlspecialchars( trim( $articleContentArea ) );
+		$articleContentArea = trim( $articleContentArea );
 		$articleContentArea = self::isValidContentArea( $articleContentArea ) ? $articleContentArea : 'unknown';
 
 		$parser->getOutput()->setProperty( self::$DATA_VAR, $articleContentArea );
