@@ -18,19 +18,21 @@ class ArticleContentArea {
 	/**
 	 * Get SELECT fields and joins for retrieving the content area
 	 *
+	 * @param null|string|array $contentArea
+	 *
 	 * @return array[] With three keys:
 	 *   - tables: (string[]) to include in the `$table` to `IDatabase->select()`
 	 *   - fields: (string[]) to include in the `$vars` to `IDatabase->select()`
 	 *   - join_conds: (array) to include in the `$join_conds` to `IDatabase->select()`
 	 *  All tables, fields, and joins are aliased, so `+` is safe to use.
 	 */
-	public static function getJoin( $contentArea ) {
+	public static function getJoin( $contentArea = null ) {
 		$dbr = wfGetDB( DB_REPLICA );
 
 		$joinType  = $contentArea ? 'INNER JOIN' : 'LEFT OUTER JOIN';
 		$joinConds = [ 'page_id = content_area_page_props.pp_page', "content_area_page_props.pp_propname = 'ArticleContentArea'" ];
 		if ( $contentArea ) {
-			$joinConds[] = 'content_area_page_props.pp_value = ' . $dbr->addQuotes( $contentArea );
+			$joinConds[] = 'content_area_page_props.pp_value IN (' . $dbr->makeList( (array)$contentArea ) . ')';
 		}
 
 		$tables['content_area_page_props'] = 'page_props';
