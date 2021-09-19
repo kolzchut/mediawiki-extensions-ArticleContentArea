@@ -26,3 +26,10 @@ a parser hook named "articlecontentarea". The extension inserts said content are
 ## Configuration
 - `$wgArticleContentAreaCategoryName` - this is the name of a category whose members are valid content
   areas. By default, it is null, and any content area is valid.
+
+## Changelog
+### 0.1.1
+Internal refactoring and some syntactic sugar in public functions
+
+### 0.1.0
+Initial release
