@@ -88,17 +88,22 @@ class ArticleContentArea {
 	}
 
 	/**
-	 * @param string $contentArea
+	 * @param string|array $contentArea
 	 *
 	 * @return bool
 	 */
 	public static function isValidContentArea( $contentArea ) {
-		global $wgArticleContentAreaCategoryName;
-
-		if ( $wgArticleContentAreaCategoryName === null ) {
+		$validValues = self::getValidContentAreas();
+		// None defined, so all are valid
+		if ( empty( $validValues ) ) {
 			return true;
 		}
 
-		return in_array( $contentArea, self::getValidContentAreas() );
+		if ( empty( $contentArea ) ) {
+			return false;
+		}
+
+		$diff = array_diff( (array)$contentArea, $validValues );
+		return count( $diff ) === 0;
 	}
 }
