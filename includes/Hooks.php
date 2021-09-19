@@ -1,9 +1,7 @@
 <?php
 namespace MediaWiki\Extension\ArticleContentArea;
 
-use OutputPage;
 use Parser;
-use ParserOutput;
 
 class Hooks implements
 	\MediaWiki\Hook\MakeGlobalVariablesScriptHook,
