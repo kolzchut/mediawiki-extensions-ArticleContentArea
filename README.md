@@ -9,6 +9,10 @@ a parser hook named "articlecontentarea". The extension inserts said content are
 
 ## Usage
 - Use `{{#articlecontentarea:the_actual_article_type}}` in an article.
+- You can read the property from PHP this way:
+  ```php
+    ArticleContentArea::getArticleContentArea( $this->getTitle() );
+  ```
 - You can read the article's content area from JS using `mw.config.get('wgArticleContentArea')`.
 - You can read the article's content area using the API this way:
   ```

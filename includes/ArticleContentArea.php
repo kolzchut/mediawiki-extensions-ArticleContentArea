@@ -3,6 +3,7 @@
 namespace MediaWiki\Extension\ArticleContentArea;
 
 use Category;
+use PageProps;
 use Title;
 
 class ArticleContentArea {
@@ -43,6 +44,20 @@ class ArticleContentArea {
 			'fields' => $fields,
 			'join_conds' => $joins
 		];
+	}
+
+	/**
+	 * Get article type from the page_props table
+	 *
+	 * @param Title $title
+	 *
+	 * @return mixed|null
+	 */
+	public static function getArticleContentArea( Title $title ) {
+		$pageProps = PageProps::getInstance();
+		$propArray = $pageProps->getProperties( $title, self::$DATA_VAR );
+
+		return empty( $propArray ) ? null : array_values( $propArray )[0];
 	}
 
 	/**
