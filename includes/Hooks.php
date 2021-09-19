@@ -11,12 +11,6 @@ class Hooks implements
 	\MediaWiki\Hook\OutputPageParserOutputHook{
 
 	/**
-	 * @var string
-	 * @private @const
-	 */
-	private static $DATA_VAR = 'ArticleContentArea';
-
-	/**
 	 * This hook is called when the parser initialises for the first time.
 	 *
 	 * @param Parser $parser Parser object being initialised
@@ -32,7 +26,7 @@ class Hooks implements
 	 * @inheritDoc
 	 */
 	public function onOutputPageParserOutput( $out, $parserOutput ) : void {
-		$out->setProperty( self::$DATA_VAR, $parserOutput->getProperty( self::$DATA_VAR ) );
+		$out->setProperty( ArticleContentArea::$DATA_VAR, $parserOutput->getProperty( ArticleContentArea::$DATA_VAR ) );
 	}
 
 	/**
@@ -46,27 +40,11 @@ class Hooks implements
 	 */
 	public static function setArticleContentArea( Parser &$parser, string $articleContentArea ) {
 		$articleContentArea = trim( $articleContentArea );
-		$articleContentArea = self::isValidContentArea( $articleContentArea ) ? $articleContentArea : 'unknown';
+		$articleContentArea = ArticleContentArea::isValidContentArea( $articleContentArea ) ? $articleContentArea : 'unknown';
 
-		$parser->getOutput()->setProperty( self::$DATA_VAR, $articleContentArea );
+		$parser->getOutput()->setProperty( ArticleContentArea::$DATA_VAR, $articleContentArea );
 
 		return '';
-	}
-
-	/**
-	 * Stub function. Currently only returns false for empty param.
-	 * @todo decide what to check - category members, a closed list...
-	 *
-	 * @param string $contentArea
-	 *
-	 * @return bool
-	 */
-	public static function isValidContentArea( $contentArea ) {
-		return !empty( $contentArea );
-		/*
-		global $wgArticleTypeConfig;
-		return in_array( $type, $wgArticleTypeConfig['types'] );
-		*/
 	}
 
 	/**
@@ -75,6 +53,6 @@ class Hooks implements
 	 * @inheritDoc
 	 */
 	public function onMakeGlobalVariablesScript( &$vars, $out ) {
-		$vars['wgArticleContentArea'] = $out->getProperty( self::$DATA_VAR );
+		$vars['wgArticleContentArea'] = $out->getProperty( ArticleContentArea::$DATA_VAR );
 	}
 }

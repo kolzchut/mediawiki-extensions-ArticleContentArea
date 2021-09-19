@@ -7,6 +7,11 @@ use Title;
 
 class ArticleContentArea {
 
+	/**
+	 * @const
+	 */
+	static string $DATA_VAR = 'ArticleType';
+
 	static $validContentAreas;
 
 	/**
