@@ -11,7 +11,7 @@ class ArticleContentArea {
 	/**
 	 * @const
 	 */
-	static string $DATA_VAR = 'ArticleType';
+	static string $DATA_VAR = 'ArticleContentArea';
 
 	static $validContentAreas;
 

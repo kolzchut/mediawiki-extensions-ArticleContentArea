@@ -28,6 +28,8 @@ a parser hook named "articlecontentarea". The extension inserts said content are
   areas. By default, it is null, and any content area is valid.
 
 ## Changelog
+### 0.1.2
+bugfix: the wrong page property was used (copied over from extension:ArticleType)
 ### 0.1.1
 Internal refactoring and some syntactic sugar in public functions
 
