@@ -19,6 +19,7 @@ class ArticleContentArea {
 	 * Get SELECT fields and joins for retrieving the content area
 	 *
 	 * @param null|string|array $contentArea
+	 * @param string $pageIdFieldName if we want to compare to a differently named page_id field, such as log_page
 	 *
 	 * @return array[] With three keys:
 	 *   - tables: (string[]) to include in the `$table` to `IDatabase->select()`
@@ -26,11 +27,11 @@ class ArticleContentArea {
 	 *   - join_conds: (array) to include in the `$join_conds` to `IDatabase->select()`
 	 *  All tables, fields, and joins are aliased, so `+` is safe to use.
 	 */
-	public static function getJoin( $contentArea = null ) {
+	public static function getJoin( $contentArea = null, $pageIdFieldName = 'page_id' ): array {
 		$dbr = wfGetDB( DB_REPLICA );
 
 		$joinType  = $contentArea ? 'INNER JOIN' : 'LEFT OUTER JOIN';
-		$joinConds = [ 'page_id = content_area_page_props.pp_page', "content_area_page_props.pp_propname = 'ArticleContentArea'" ];
+		$joinConds = [ $pageIdFieldName . ' = content_area_page_props.pp_page', "content_area_page_props.pp_propname = 'ArticleContentArea'" ];
 		if ( $contentArea ) {
 			$joinConds[] = 'content_area_page_props.pp_value IN (' . $dbr->makeList( (array)$contentArea ) . ')';
 		}
