@@ -89,6 +89,31 @@ class ArticleContentArea {
 	}
 
 	/**
+	 * Return array of names and titles for content areas currently assigned to pages.
+	 * @return array
+	 */
+	public static function getAssignedContentAreas() {
+		static $assignedContentAreas;
+		// Do this expensive thing only once.
+		if ( !isset( $assignedContentAreas ) ) {
+			$assignedContentAreas = [];
+			$dbr = wfGetDB( DB_REPLICA );
+			$res = $dbr->select(
+				[ 'page_props' => 'page_props' ],
+				[ 'page_props.pp_value' ],
+				"page_props.pp_propname = 'ArticleContentArea' and pp_value <> ''",
+				__METHOD__,
+				[ 'GROUP BY' => 'pp_value', 'ORDER BY' => 'pp_value ASC' ],
+			);
+			for ( $row = $res->fetchRow(); is_array( $row ); $row = $res->fetchRow() ) {
+				$category = Category::newFromName( $row['pp_value'] );
+				$assignedContentAreas[ $category->getName() ] = $category->getTitle()->getBaseText();
+			}
+		}
+		return $assignedContentAreas;
+	}
+
+	/**
 	 * @param string|array $contentArea
 	 *
 	 * @return bool
