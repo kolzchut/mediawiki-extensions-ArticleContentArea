@@ -14,7 +14,7 @@ class Hooks implements
 	 * @param Parser $parser Parser object being initialised
 	 * @return bool|void True or no return value to continue or false to abort
 	 */
-	public function onParserFirstCallInit( $parser ) {
+	public function onParserFirstCallInit( $parser ): void {
 		$parser->setFunctionHook( 'articlecontentarea', [ __CLASS__, 'setArticleContentArea' ] );
 	}
 
@@ -50,7 +50,7 @@ class Hooks implements
 	 *
 	 * @inheritDoc
 	 */
-	public function onMakeGlobalVariablesScript( &$vars, $out ) {
+	public function onMakeGlobalVariablesScript( &$vars, $out ): void {
 		$vars['wgArticleContentArea'] = $out->getProperty( ArticleContentArea::$DATA_VAR );
 	}
 }
