@@ -3,7 +3,7 @@
 namespace MediaWiki\Extension\ArticleContentArea;
 
 use Category;
-use PageProps;
+use MediaWiki\MediaWikiServices;
 use Title;
 
 class ArticleContentArea {
@@ -54,10 +54,10 @@ class ArticleContentArea {
 	 *
 	 * @param Title $title
 	 *
-	 * @return mixed|null
+	 * @return string|null
 	 */
-	public static function getArticleContentArea( Title $title ) {
-		$pageProps = PageProps::getInstance();
+	public static function getArticleContentArea( Title $title ) : ?string {
+		$pageProps = MediaWikiServices::getInstance()->getPageProps();
 		$propArray = $pageProps->getProperties( $title, self::$DATA_VAR );
 
 		return empty( $propArray ) ? null : array_values( $propArray )[0];
@@ -92,7 +92,7 @@ class ArticleContentArea {
 	 * Return array of names and titles for content areas currently assigned to pages.
 	 * @return array
 	 */
-	public static function getAssignedContentAreas() {
+	public static function getAssignedContentAreas(): array	{
 		static $assignedContentAreas;
 		// Do this expensive thing only once.
 		if ( !isset( $assignedContentAreas ) ) {
