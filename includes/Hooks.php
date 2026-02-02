@@ -24,7 +24,7 @@ class Hooks implements
 	 * @inheritDoc
 	 */
 	public function onOutputPageParserOutput( $out, $parserOutput ) : void {
-		$out->setProperty( ArticleContentArea::$DATA_VAR, $parserOutput->getProperty( ArticleContentArea::$DATA_VAR ) );
+		$out->setProperty( ArticleContentArea::$DATA_VAR, $parserOutput->getPageProperty( ArticleContentArea::$DATA_VAR ) );
 	}
 
 	/**
@@ -40,7 +40,7 @@ class Hooks implements
 		$articleContentArea = trim( $articleContentArea );
 		$articleContentArea = ArticleContentArea::isValidContentArea( $articleContentArea ) ? $articleContentArea : 'unknown';
 
-		$parser->getOutput()->setProperty( ArticleContentArea::$DATA_VAR, $articleContentArea );
+		$parser->getOutput()->setPageProperty( ArticleContentArea::$DATA_VAR, $articleContentArea );
 
 		return '';
 	}
