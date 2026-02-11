@@ -27,8 +27,7 @@ class ArticleContentArea {
 	 *  All tables, fields, and joins are aliased, so `+` is safe to use.
 	 */
 	public static function getJoin( $contentArea = null, $pageIdFieldName = 'page_id' ): array {
-		$dbr = wfGetDB( DB_REPLICA );
-
+		$dbr = MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
 		$joinType  = $contentArea ? 'INNER JOIN' : 'LEFT OUTER JOIN';
 		$joinConds = [ $pageIdFieldName .
 			' = content_area_page_props.pp_page', "content_area_page_props.pp_propname = 'ArticleContentArea'" ];
@@ -97,7 +96,7 @@ class ArticleContentArea {
 		// Do this expensive thing only once.
 		if ( !isset( $assignedContentAreas ) ) {
 			$assignedContentAreas = [];
-			$dbr = wfGetDB( DB_REPLICA );
+			$dbr = MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
 			$res = $dbr->select(
 				[ 'page_props' => 'page_props' ],
 				[ 'page_props.pp_value' ],
