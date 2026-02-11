@@ -8,12 +8,11 @@ use Title;
 
 class ArticleContentArea {
 
-	/**
-	 * @const
-	 */
-	static string $DATA_VAR = 'ArticleContentArea';
+	/** @var string */
+	public static string $DATA_VAR = 'ArticleContentArea';
 
-	static $validContentAreas;
+	/** @var array */
+	private static array $validContentAreas;
 
 	/**
 	 * Get SELECT fields and joins for retrieving the content area
@@ -31,7 +30,8 @@ class ArticleContentArea {
 		$dbr = wfGetDB( DB_REPLICA );
 
 		$joinType  = $contentArea ? 'INNER JOIN' : 'LEFT OUTER JOIN';
-		$joinConds = [ $pageIdFieldName . ' = content_area_page_props.pp_page', "content_area_page_props.pp_propname = 'ArticleContentArea'" ];
+		$joinConds = [ $pageIdFieldName .
+			' = content_area_page_props.pp_page', "content_area_page_props.pp_propname = 'ArticleContentArea'" ];
 		if ( $contentArea ) {
 			$joinConds[] = 'content_area_page_props.pp_value IN (' . $dbr->makeList( (array)$contentArea ) . ')';
 		}
@@ -56,7 +56,7 @@ class ArticleContentArea {
 	 *
 	 * @return string|null
 	 */
-	public static function getArticleContentArea( Title $title ) : ?string {
+	public static function getArticleContentArea( Title $title ): ?string {
 		$pageProps = MediaWikiServices::getInstance()->getPageProps();
 		$propArray = $pageProps->getProperties( $title, self::$DATA_VAR );
 
@@ -78,7 +78,7 @@ class ArticleContentArea {
 		} else {
 			$category = Category::newFromName( $wgArticleContentAreaCategoryName );
 			$members  = iterator_to_array( $category->getMembers() );
-			array_walk($members, function ( Title &$t ) {
+			array_walk( $members, static function ( Title &$t ) {
 				$t = $t->getText();
 			} );
 
@@ -92,7 +92,7 @@ class ArticleContentArea {
 	 * Return array of names and titles for content areas currently assigned to pages.
 	 * @return array
 	 */
-	public static function getAssignedContentAreas(): array	{
+	public static function getAssignedContentAreas(): array {
 		static $assignedContentAreas;
 		// Do this expensive thing only once.
 		if ( !isset( $assignedContentAreas ) ) {

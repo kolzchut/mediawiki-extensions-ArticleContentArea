@@ -1,6 +1,8 @@
 {
 	"@metadata": {
-		"authors": [
-		]
-	}
+		"authors": []
+	},
+	"articlecontentarea": "Name",
+	"articlecontentarea-desc": "{{desc|name=ArticleContentArea|url=https://github.com/kolzchut/mediawiki-extensions-ArticleContentArea}}",
+	"articlecontentarea-field-label": "Field label for other extensions that want to filter by content area"
 }
