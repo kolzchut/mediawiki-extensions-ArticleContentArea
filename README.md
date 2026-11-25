@@ -25,9 +25,21 @@ a parser hook named "articlecontentarea". The extension inserts said content are
 
 ## Configuration
 - `$wgArticleContentAreaCategoryName` - this is the name of a category whose members are valid content
-  areas. By default, it is null, and any content area is valid.
+  areas. A value that is not one of them is stored as `unknown`. By default, it is null, and so is
+  every content area stored as `unknown`; the same goes for a category with no members.
+- `$wgArticleContentAreaSourceWiki` - the wiki ID (database name) of the wiki that has that category.
+  In a wiki farm that stores one wiki's content-area names on every wiki, set it on the other wikis to
+  that wiki, so that they accept the same names. By default, it is null, which means this wiki. If the
+  source wiki's database cannot be queried, no content area is valid, and a warning is logged to the
+  `ArticleContentArea` channel.
 
 ## Changelog
+### 0.3.0
+- No content area is valid while there is no list of valid content areas. Before, an empty list
+  (no category configured, or an empty category) made every value valid.
+- `$wgArticleContentAreaSourceWiki`: validate against another wiki's category.
+- Requires MediaWiki 1.43.
+
 ### 0.1.2
 bugfix: the wrong page property was used (copied over from extension:ArticleType)
 ### 0.1.1

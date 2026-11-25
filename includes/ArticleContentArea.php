@@ -11,9 +11,6 @@ class ArticleContentArea {
 	/** @var string */
 	public static string $DATA_VAR = 'ArticleContentArea';
 
-	/** @var array */
-	private static array $validContentAreas;
-
 	/**
 	 * Get SELECT fields and joins for retrieving the content area
 	 *
@@ -63,28 +60,15 @@ class ArticleContentArea {
 	}
 
 	/**
-	 * @return array
+	 * The valid content areas: the members of $wgArticleContentAreaCategoryName
+	 * on $wgArticleContentAreaSourceWiki (this wiki where that is null).
+	 *
+	 * @return string[]
 	 */
 	public static function getValidContentAreas(): array {
-		global $wgArticleContentAreaCategoryName;
-
-		if ( isset( self::$validContentAreas ) ) {
-			return self::$validContentAreas;
-		}
-
-		if ( $wgArticleContentAreaCategoryName === null ) {
-			self::$validContentAreas = [];
-		} else {
-			$category = Category::newFromName( $wgArticleContentAreaCategoryName );
-			$members  = iterator_to_array( $category->getMembers() );
-			array_walk( $members, static function ( Title &$t ) {
-				$t = $t->getText();
-			} );
-
-			self::$validContentAreas = $members;
-		}
-
-		return self::$validContentAreas;
+		/** @var ValidContentAreaLookup $lookup */
+		$lookup = MediaWikiServices::getInstance()->getService( 'ArticleContentArea.ValidContentAreaLookup' );
+		return $lookup->getNames();
 	}
 
 	/**
@@ -116,18 +100,23 @@ class ArticleContentArea {
 	}
 
 	/**
+	 * Whether every value given is one of the valid content areas.
+	 *
+	 * Where there are no valid content areas (no category configured, an empty
+	 * category, or a source wiki that cannot be read), nothing is valid: the
+	 * value is stored as a page property that other extensions read and show.
+	 *
 	 * @param string|array $contentArea
 	 *
 	 * @return bool
 	 */
 	public static function isValidContentArea( $contentArea ) {
-		$validValues = self::getValidContentAreas();
-		// None defined, so all are valid
-		if ( empty( $validValues ) ) {
-			return true;
+		if ( empty( $contentArea ) ) {
+			return false;
 		}
 
-		if ( empty( $contentArea ) ) {
+		$validValues = self::getValidContentAreas();
+		if ( !$validValues ) {
 			return false;
 		}
 
