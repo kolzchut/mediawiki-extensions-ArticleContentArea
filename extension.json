@@ -1,17 +1,23 @@
 {
 	"name": "ArticleContentArea",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"author": "Dror S. [FFS] ([https://www.kolzchut.org.il Kol-Zchut])",
 	"url": "https://github.com/kolzchut/mediawiki-extensions-ArticleContentArea",
 	"descriptionmsg": "articlecontentarea-desc",
 	"license-name": "GPL-2.0-or-later",
 	"type": "parserhook",
 	"requires": {
-		"MediaWiki": ">= 1.35.0"
+		"MediaWiki": ">= 1.43.0"
 	},
 	"AutoloadNamespaces": {
 		"MediaWiki\\Extension\\ArticleContentArea\\": "includes/"
 	},
+	"TestAutoloadNamespaces": {
+		"MediaWiki\\Extension\\ArticleContentArea\\Tests\\": "tests/phpunit/"
+	},
+	"ServiceWiringFiles": [
+		"includes/ServiceWiring.php"
+	],
 	"MessagesDirs": {
 		"ArticleContentArea": [
 			"i18n"
@@ -34,7 +40,11 @@
 	"config": {
 		"ArticleContentAreaCategoryName": {
 			"value": null,
-			"description": "The name of a category whose members are the valid content areas"
+			"description": "The name of a category whose members are the valid content areas. While it is null, or the category has no members, no content area is valid, and {{#articlecontentarea:}} stores 'unknown'."
+		},
+		"ArticleContentAreaSourceWiki": {
+			"value": null,
+			"description": "Wiki ID (database name) of the wiki that has the $wgArticleContentAreaCategoryName category, for a wiki farm that stores one wiki's content-area names on every wiki. null means this wiki. A source wiki whose database cannot be queried gives no valid content areas, and a warning in the ArticleContentArea log channel."
 		}
 	},
 	"manifest_version": 2
